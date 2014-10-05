@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html ng-app>
+<meta charset="utf-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.js"></script>
+
+<body>
+
+<style>
+	.first-true{
+		color:red;
+	}
+</style>
+<div>
+	<input type="search" ng-model="search" />
+	<!-- set the ng-model name of the search -->
+</div>
+
+<div ng-controller="list">
+	<!-- set the ng-controller name of the list that is going to be outputted (defined in the function 'list' hence the name) -->
+	<ul>
+		<li ng-repeat="person in people | filter:search" class="first-{{$first}}">
+		<!-- 
+			set the ng-repeat to pull the data from the model names
+			define the filter name to match the filter element
+			add {{$first}} data model to test if the element is true or false for styling purposes
+		 -->
+			{{person.name}} - {{person.age}}
+			<button ng-click="remove($index)">x</button>
+			<!-- click method runs 'remove' function defined below - and pulls through the index of the element in the array -->
+			<span ng-show="$first">First</span>	
+			<!-- $first makes this only appear on the first element in the repeat -->		
+			<span ng-show="$last">Last</span>	
+			<!-- $first makes this only appear on the last element in the repeat -->
+			<span ng-show="$middle">middle</span>	
+			<!-- $first makes this only appear on the middle element in the repeat -->
+		</li>
+	</ul>
+	
+	<span>There are {{people.length}} people in the list</span>
+	
+	<div>
+		<label>Name</lable><input type="text" ng-model="new_name" />
+		<br>
+		<label>Age</label><input type="number" ng-model="new_age" />
+		<br>
+		<button ng-click="add()">Add</button>
+		<!-- click method runs 'add' function defined below -->
+	</div>
+</div>
+
+<script>
+	var list = function ($scope){
+		$scope.people = [
+		{name : "Aaron", age : 30},
+		{name : "Tyrone", age : 30},
+		{name : "Morgan", age : 35},
+		{name : "Nathan", age : 32}
+		];
+		
+		$scope.add = function (){
+		/* 
+			scope refers to the application model
+			add refers to the function name
+		 */
+			$scope.people.push({
+			/*
+				adds a new element to the people array
+			*/
+				name: $scope.new_name,
+				age: $scope.new_age
+			});
+			$scope.new_name = "";
+			$scope.new_age = "";
+			/*
+				removes the values of the var declared above
+			*/
+		};
+		
+		$scope.remove = function(index){
+			/*
+				removes an element form the array - index passed through
+			*/
+			$scope.people.splice(index, 1);
+			/*
+				slice is the command to remove 'index, 1' defines the array element and that only 1 should be removed.
+			*/
+		}
+	}
+</script>
+
+</body>
+</html>
